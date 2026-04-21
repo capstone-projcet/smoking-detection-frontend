@@ -8,6 +8,7 @@
 - Zustand
 - TanStack React Query
 - Axios
+- shadcn/tailwind.css
 
 ## 시작하기
 
