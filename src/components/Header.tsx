@@ -9,9 +9,8 @@ export default function Header() {
 
   const menuItems = [
     { id: "dashboard", label: "대시보드", href: "/dashboard" },
-    { id: "history", label: "이력", href: "/history" },
-    { id: "reports", label: "보고서", href: "/reports" },
-    { id: "settings", label: "설정", href: "/settings" },
+    { id: "history", label: "이력 조회", href: "/history" },
+    { id: "zones", label: "구역 관리", href: "/zones" },
   ];
 
   const handleMenuClick = (id: string, href: string) => {
