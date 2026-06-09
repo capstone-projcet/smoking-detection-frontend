@@ -3,8 +3,11 @@
 import { useState } from 'react';
 import { useDeviceStore } from '@/store/deviceStore';
 import { useLatestSensor } from '@/hooks/useSmoke';
+// import { useAiAnalysis } from '@/hooks/useSmoke'; // AI 분석 기능 (비활성화)
 import { getOverallLevel, getPm25Level, getGasLevel, type SmokeEventResponse, type AlertLevel } from '@/types/smoke';
 import { Plus, X, Thermometer, Droplets, Wind, Flame, AlertTriangle, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
+// import { Brain, CloudRain } from 'lucide-react'; // AI 분석 기능 (비활성화)
+// import type { AiAnalysisResult } from '@/app/api/ai-analysis/route'; // AI 분석 기능 (비활성화)
 
 const LEVEL_COLORS: Record<AlertLevel, { bg: string; border: string; badge: string; text: string }> = {
   normal: {
@@ -145,6 +148,85 @@ function AlertBanner({ devices }: { devices: string[] }) {
   );
 }
 
+// AI 분석 기능 (비활성화)
+// const AI_MODE_STYLES = {
+//   Normal: { bg: 'bg-emerald-50', border: 'border-emerald-200', badge: 'bg-emerald-100 text-emerald-700', dot: 'bg-emerald-400' },
+//   Warning: { bg: 'bg-amber-50', border: 'border-amber-300', badge: 'bg-amber-100 text-amber-700', dot: 'bg-amber-400' },
+//   Critical: { bg: 'bg-red-50', border: 'border-red-300', badge: 'bg-red-100 text-red-700', dot: 'bg-red-500' },
+// };
+//
+// type DemoScenario = 'normal' | 'warning' | 'critical' | null;
+//
+// function AiAnalysisCard({ macAddress, demoScenario }: { macAddress: string; demoScenario: DemoScenario }) {
+//   const { data, isLoading, isError, dataUpdatedAt } = useAiAnalysis(macAddress, demoScenario);
+//   const style = AI_MODE_STYLES[data?.mode ?? 'Normal'];
+//   const updatedAt = dataUpdatedAt ? new Date(dataUpdatedAt).toLocaleTimeString('ko-KR') : null;
+//
+//   return (
+//     <div className={`rounded-2xl border-2 ${style.border} ${style.bg} p-5 flex flex-col gap-4`}>
+//       <div className="flex items-center justify-between">
+//         <div className="flex items-center gap-2">
+//           <div className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center">
+//             <Brain className="w-4 h-4 text-slate-500" />
+//           </div>
+//           <div>
+//             <p className="text-sm font-bold text-slate-900">AI 분석 결과</p>
+//             {updatedAt && (
+//               <p className="text-xs text-slate-400 flex items-center gap-1">
+//                 <RefreshCw className="w-3 h-3" /> {updatedAt} · 30초마다 갱신
+//               </p>
+//             )}
+//           </div>
+//         </div>
+//         {data && (
+//           <div className="flex items-center gap-2">
+//             {data.weatherHumidity !== null && (
+//               <span className="flex items-center gap-1 text-xs text-slate-500 bg-white/70 px-2 py-1 rounded-lg border border-slate-200">
+//                 <CloudRain className="w-3 h-3" /> 외부습도 {data.weatherHumidity}%
+//               </span>
+//             )}
+//             <span className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full ${style.badge}`}>
+//               <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
+//               {data.mode}
+//             </span>
+//           </div>
+//         )}
+//       </div>
+//       {isLoading && (
+//         <div className="flex items-center justify-center gap-2 h-16 text-sm text-slate-400">
+//           <Brain className="w-4 h-4 animate-pulse" /> AI 분석 중...
+//         </div>
+//       )}
+//       {isError && (
+//         <div className="flex items-center justify-center gap-2 h-16 text-sm text-red-400">
+//           <XCircle className="w-4 h-4" /> AI 분석을 불러올 수 없습니다
+//         </div>
+//       )}
+//       {data && (
+//         <div className="flex flex-col gap-3">
+//           <div className="flex items-start gap-3 bg-white/60 rounded-xl p-4 border border-white">
+//             <span className="text-2xl">{data.icon}</span>
+//             <div className="flex flex-col gap-1">
+//               <p className="text-sm font-semibold text-slate-800">{data.title}</p>
+//               <p className="text-sm text-slate-600 leading-relaxed">{data.description}</p>
+//             </div>
+//           </div>
+//           <div className="flex items-start gap-2 px-3 py-2 bg-white/40 rounded-lg">
+//             <AlertTriangle className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
+//             <p className="text-xs text-slate-600"><span className="font-semibold">권장 조치:</span> {data.action}</p>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+//
+// const DEMO_LABELS: Record<string, { label: string; color: string }> = {
+//   normal:   { label: '정상', color: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' },
+//   warning:  { label: '주의', color: 'bg-amber-100 text-amber-700 hover:bg-amber-200' },
+//   critical: { label: '위험', color: 'bg-red-100 text-red-700 hover:bg-red-200' },
+// };
+
 function AddDeviceModal({ onAdd, onClose }: { onAdd: (mac: string) => void; onClose: () => void }) {
   const [input, setInput] = useState('');
 
@@ -196,10 +278,48 @@ function AddDeviceModal({ onAdd, onClose }: { onAdd: (mac: string) => void; onCl
 export default function DashboardPage() {
   const { devices, addDevice, removeDevice } = useDeviceStore();
   const [showModal, setShowModal] = useState(false);
+  // AI 분석 기능 (비활성화)
+  // const [selectedAiMac, setSelectedAiMac] = useState<string | null>(null);
+  // const [demoScenario, setDemoScenario] = useState<DemoScenario>(null);
+  // const aiMac = selectedAiMac ?? devices[0] ?? 'NODE_302';
 
   return (
     <main className="max-w-7xl mx-auto px-6 py-8 flex flex-col gap-6">
       {devices.length > 0 && <AlertBanner devices={devices} />}
+
+      {/* AI 분석 기능 (비활성화)
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <Brain className="w-4 h-4 text-slate-500" />
+          <span className="text-sm font-semibold text-slate-700">AI 실시간 분석</span>
+          <div className="flex items-center gap-1 ml-auto">
+            <span className="text-xs text-slate-400 mr-1">데모:</span>
+            {(Object.keys(DEMO_LABELS) as DemoScenario[]).map((scenario) => (
+              <button
+                key={scenario}
+                onClick={() => setDemoScenario(demoScenario === scenario ? null : scenario)}
+                className={`text-xs px-2.5 py-1 rounded-full font-medium transition-colors border ${
+                  demoScenario === scenario
+                    ? DEMO_LABELS[scenario!].color + ' border-current'
+                    : 'bg-white text-slate-400 border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                {DEMO_LABELS[scenario!].label}
+              </button>
+            ))}
+            {demoScenario && (
+              <button
+                onClick={() => setDemoScenario(null)}
+                className="text-xs px-2 py-1 rounded-full text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                실제 데이터
+              </button>
+            )}
+          </div>
+        </div>
+        <AiAnalysisCard macAddress={aiMac} demoScenario={demoScenario} />
+      </div>
+      */}
 
       <div className="flex items-center justify-between">
         <div>
